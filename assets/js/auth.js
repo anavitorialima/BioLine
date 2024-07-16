@@ -61,9 +61,12 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
+     //Mudanças de estado
     onAuthStateChanged(auth, (user) => {
         if (user) {
             const uid = user.uid
+
+            // Verificação de Elementos
 
             if (linkSair) linkSair.classList.remove('hide')
             if (formLogin) formLogin.classList.add('hide')
