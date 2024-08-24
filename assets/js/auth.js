@@ -1,3 +1,4 @@
+
 import { auth } from './firebase.js'
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"
 
@@ -7,82 +8,78 @@ document.addEventListener('DOMContentLoaded', () => {
     const senhaInput = document.querySelector('.senha-admin')
     const linkSair = document.querySelector('.link-sair')
     const formPost = document.querySelector('.form-post')
-    const titulologin = document.querySelector('.titulo-login')
+    const tituloLogin = document.querySelector('.titulo-login')
     const mensagens = document.querySelector('.mensagens')
+    const gerenciadorConteudos = document.querySelector('.gerenciador-conteudos')
 
     // mensagens
-    const alertaUsuario = (alertaUsuario)=>{
-        mensagens.innerHTML = alertaUsuario
-    }
-        
-    //Limpas mensagem
-    const limparmensagem = () =>{
-        setInterval(()=>{
-            mensagens.innerHTML =''
-        },3000)
+    const alertaUsuario = (alerta)=>{
+        mensagens.innerHTML = alerta
     }
 
+    // Limpar mensagem
+    const limparMensagem = () =>
+        setInterval(()=>{
+            mensagens.innerHTML = alertaUsuario
+        }, 3000)
+    
+
+
+    // Evento de login
     if (formLogin) {
         formLogin.addEventListener('submit', (e) => {
             e.preventDefault()
             const email = emailInput.value
             const senha = senhaInput.value
 
-            if (formLogin) {
-                signInWithEmailAndPassword(auth, email, senha)
-                    .then((userCredential) => {
-                        const user = userCredential.user
-                        alertaUsuario('Usuário logado com sucesso.')
-                        limparmensagem()
-                        emailInput.value = ''
-                        senhaInput.value = ''
-                    })
-                    .catch(() => {
-                       alertaUsuario('Verifique a sua conexão ou o email e senha')
-                       limparmensagem()
-                    })
-            }
-
+            signInWithEmailAndPassword(auth, email, senha)
+                .then((userCredential) => {
+                    const user = userCredential.user
+                    alertaUsuario(logadoSucesso)
+                    limparMensagem()
+                    emailInput.value = ''
+                    senhaInput.value = ''
+                })
+                .catch(() => {
+                    alertaUsuario('Verifique a sua conexão ou o seu email e senha')
+                    limparMensagem()
+                })
         })
     }
 
+    // Evento de logout
     if (linkSair) {
         linkSair.addEventListener('click', () => {
             signOut(auth)
-                .then(() => {
-                    alertaUsuario('Logout realizado com sucesso.')
-                    limparmensagem()
+                .then(()=>{
+                   aletaUsuario ('Logout realizado com sucesso')
+                    limparMensagem()
                 })
-                .catch(() => {
-                    alertaUsuario('Ocorreu um erro Inesperado.')
-                    limparmensagem()
+                .catch(()=>{
+                    alertaUsuario(verifiqueConexao)
+                    limparMensagem()
                 })
-
         })
     }
 
-     //Mudanças de estado
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
+    // Mudança de estado
+    onAuthStateChanged(auth,(user)=>{
+        if(user){
             const uid = user.uid
-
-            // Verificação de Elementos
-
-            if (linkSair) linkSair.classList.remove('hide')
-            if (formLogin) formLogin.classList.add('hide')
-            if (formPost) formPost.classList.remove('hide')
-            if (titulologin) titulologin.innerHTML = 'Acesso Liberado.'
-        } else {
-            if (linkSair) linkSair.classList.add('hide')
-            if (formLogin) formLogin.classList.remove('hide')
-            if (formPost) formPost.classList.add('hide')
-            if (titulologin) titulologin.innerHTML = 'FAÇA O LOGIN NO SITE!!'
+              //
+            if(linkSair) linkSair.classList.remove('hide')
+            if(formLogin) formLogin.classList.add('hide')
+            if(formPost) formPost.classList.remove('hide')
+            if(tituloLogin) tituloLogin.innerHTML = 'ACESSO AO ADMINISTRADOR LIBERADO'
+            if(gerenciadorConteudos) gerenciadorConteudos.classList.remove('hide')
+        }else{
+            if(linkSair) linkSair.classList.add('hide')
+            if(formLogin) formLogin.classList.remove('hide')
+            if(formPost) formPost.classList.add('hide')
+            if(tituloLogin) tituloLogin.innerHTML = 'FAÇA O LOGIN COMO ADMINISTRADOR!'
+            if(gerenciadorConteudos) gerenciadorConteudos.classList.add('hide')
         }
-
     })
 
 
-
-
 })
-
