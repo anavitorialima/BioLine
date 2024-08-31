@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="decoration-bar" ></div>
         <img src="${post.imagemUrl}" alt="imagem de ${post.titulo}" class="img-blog my-5 img-fluid" />
         <p>${post.mensagem}</p>
-        <p class="align-self-center mt-5" >Publicado em:${post.data} por ${post.autor}.</p>
+        <p class="align-self-center mt-5 text-end" >Publicado em:${post.data} por ${post.autor}.</p>
         <hr/>
     `
 
